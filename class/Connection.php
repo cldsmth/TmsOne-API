@@ -1,10 +1,10 @@
 <?php
 class Connection{
 	// Include database connection settings
-	private $username = "tamara_dev";
-	private $password = "dev123";
-	private $hostname = "localhost";
-	private $database = "tamara_dokdig";
+	private $username = 'tsproper_root';
+	private $password = '@aXp4W$Mw6A^';
+	private $hostname = 'localhost';
+	private $database = 'tsproper_tms';
     
 	public function up(){
 		$this->dbh_system = mysql_connect($this->hostname, $this->username, $this->password) or die("Unable to connect to MySQL");

@@ -1,6 +1,6 @@
 <?php
-$global['absolute-url'] = "http://www.tamara.id/tms/";
-$global['root-url'] = $_SERVER['DOCUMENT_ROOT']."/tms/";
+$global['absolute-url'] = "http://tms-one.com/mobile/";
+$global['root-url'] = $_SERVER['DOCUMENT_ROOT']."/mobile/";
 $global['root-url-model'] = $global['root-url']."class/";
 $global['api'] = $global['absolute-url']."api/";
 $global['path-head'] = "packages/head.php";
@@ -8,10 +8,10 @@ $global['path-config'] = "packages/front_config.php";
 $seo['company-name'] = "TMS One";
 
 //config for smtp email
-$smtp['url'] = "www.tamara.id";
+$smtp['url'] = "www.tms-one.com";
 $smtp['to'] = "dean11.cliff@gmail.com";
-$smtp['from'] = "cliff@tamara.id";
-$smtp['password'] = "cliff123";
+$smtp['from'] = "";
+$smtp['password'] = "";
 
 $access_token['api-user'] = "Basic YXBpLXVzZXItalUzQWNXLVZzR1NyaE5OZnNZM0xmNXl1";
 $access_token['api-owner'] = "Basic YXBpLW93bmVyLWpVM0FjVy1Wc0dTcmhOTmZzWTNMZjV5dQ==";
