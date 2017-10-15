@@ -1,0 +1,13 @@
+{
+  "status": "200",
+  "message": "Success insert property",
+  "data": [{
+    "property_id": "5",
+    "property_owner": "Tono",
+    "property_title": "Ruko Bumi Serpong Lestari Di Jl Hutama Karya - BSD, SHM",
+    "property_address": "Tangerang Selatan, Banten",
+    "property_price": "1000000000",
+    "property_img": "uploads/property/5.jpeg",
+    "property_img_thmb": "uploads/property-thmb/5.jpeg"
+  }]
+}

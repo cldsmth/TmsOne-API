@@ -1,0 +1,47 @@
+{
+  "status": "200",
+  "message": "Data Exist",
+  "num_data": 6,
+  "remaining": 3,
+  "data": [{
+    "property_id": "1",
+    "property_owner": "Cliff",
+    "property_title": "Dijual Runah Jl Soekarno Hatta",
+    "property_address": "Malang Kota, Jawa Timur",
+    "property_price": "45000000000",
+    "property_img": "uploads/property/1.jpg",
+    "property_img_thmb": "uploads/property-thmb/1.jpg"
+  }, {
+    "property_id": "2",
+    "property_owner": "Riandy",
+    "property_title": "Tanah Kavling",
+    "property_address": "Pasuruan, Jawa Timur",
+    "property_price": "42000000",
+    "property_img": "uploads/property/2.jpg",
+    "property_img_thmb": "uploads/property-thmb/2.jpg"
+  }, {
+    "property_id": "3",
+    "property_owner": "Budi",
+    "property_title": "Rumah Minimalis Cantik Harum",
+    "property_address": "Malang Kota, Jawa Timur",
+    "property_price": "575000000",
+    "property_img": "uploads/property/3.jpg",
+    "property_img_thmb": "uploads/property-thmb/3.jpg"
+  }, {
+    "property_id": "4",
+    "property_owner": "David",
+    "property_title": "JUAL TANAH MURAH BYPAS IB MANTRA",
+    "property_address": "Klungkung, Bali",
+    "property_price": "2730000000",
+    "property_img": "uploads/property/4.png",
+    "property_img_thmb": "uploads/property-thmb/4.png"
+  }, {
+    "property_id": "5",
+    "property_owner": "Tono",
+    "property_title": "Ruko Bumi Serpong Lestari Di Jl Hutama Karya - BSD, SHM",
+    "property_address": "Tangerang Selatan, Banten",
+    "property_price": "1000000000",
+    "property_img": "uploads/property/5.jpeg",
+    "property_img_thmb": "uploads/property-thmb/5.jpeg"
+  }]
+}
