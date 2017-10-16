@@ -1,12 +1,13 @@
 <?php
 class Kecamatan{
 
-	private $table = "t_kecamatan";
+	private $table = "mst_kecamatan";
 
     public function get_list_by_city($city){
         $result = 0;
        
-        $text = "SELECT id_kec, nama FROM $this->table WHERE id_kab = '$city'";
+        $text = "SELECT id_kecamatan, nama_kecamatan FROM $this->table 
+            WHERE id_subarea = '$city' ORDER BY nama_kecamatan ASC";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();

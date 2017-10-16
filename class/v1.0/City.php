@@ -7,7 +7,7 @@ class City{
         $result = 0;
        
         $text = "SELECT id_subarea, nama_subarea FROM $this->table 
-            WHERE id_area = '$province' AND status = 1";
+            WHERE status = 1 AND id_area = '$province' ORDER BY nama_subarea ASC";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
