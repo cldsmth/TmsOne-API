@@ -34,7 +34,7 @@ if(isset($_GET['action'])){
 				
 				$N_email = mysql_real_escape_string($_POST['email']);
 				$N_password = mysql_real_escape_string($_POST['password']);
-				$password = $obj_encrypt->encode($N_password);
+				$password = md5($N_password);
 
 				$result = $obj_user->login($N_email, $password);
 				//var_dump($result);

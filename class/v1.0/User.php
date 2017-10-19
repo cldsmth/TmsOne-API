@@ -1,7 +1,8 @@
 <?php
 class User{
 
-	private $table = "t_user";
+	private $table = "mst_listor";
+    private $joinMember = "LEFT JOIN mst_member member ON member.id_member = listor.id_member";
 
     public function check_password($id, $password){
         $result = 0;
@@ -28,12 +29,14 @@ class User{
     public function login($email, $password){
         $result = 0;//FAILED
         
-        $text = "SELECT user_id, user_no_tmc, user_name, user_card_name, user_email, user_province, user_city,
-            user_height, user_weight, user_size, user_work, user_tempat_lahir, user_birthday, user_gender,
-            user_status_menikah, user_warga_negara, user_ktp, user_address, user_mail_address, user_religion,
-            user_phone1, user_phone2, user_phone3, user_npwp, user_instagram, user_whatsapp, user_bank, 
-            user_cabang, user_no_rek, user_img, user_scan, user_auth_token FROM $this->table 
-            WHERE user_email = '$email' AND user_password = '$password' LIMIT 0,1";
+        $text = "SELECT listor.id_listor, listor.listor_number, listor.nama_lengkap, listor.nama_kartu, listor.email, 
+            '0' AS id_area, 'Area' AS nama_area, '0' AS id_subarea, 'Subarea' AS nama_subarea, listor.tinggi_badan, 
+            listor.berat_badan, listor.ukuran_seragam, listor.waktu_kerja, listor.tempat_lahir, listor.tanggal_lahir, 
+            listor.kelamin, listor.status_menikah, listor.warga_negara, listor.no_ktp, listor.alamat_lengkap, 
+            listor.alamat_surat, listor.agama, listor.telp1, listor.telp2, listor.telp3, listor.no_npwp, listor.instagram, 
+            listor.no_wa, listor.nama_bank, listor.cabang_bank, listor.no_rek, listor.photo, listor.ktp_scan FROM 
+            $this->table listor $this->joinMember WHERE member.email = '$email' AND member.password = '$password' 
+            AND member.reg_status = 1 LIMIT 0,1";
         $query = mysql_query($text);
         if(mysql_num_rows($query) == 1){//HAS TO BE EXACT 1 RESULT
             $row = mysql_fetch_assoc($query);
