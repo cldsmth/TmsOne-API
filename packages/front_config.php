@@ -10,8 +10,8 @@ $seo['company-name'] = "TMS One";
 //config for smtp email
 $smtp['url'] = "www.tms-one.com";
 $smtp['to'] = "dean11.cliff@gmail.com";
-$smtp['from'] = "";
-$smtp['password'] = "";
+$smtp['from'] = "mobiledev@tms-one.com";
+$smtp['password'] = "developer123";
 
 $access_token['api-user'] = "Basic YXBpLXVzZXItalUzQWNXLVZzR1NyaE5OZnNZM0xmNXl1";
 $access_token['api-owner'] = "Basic YXBpLW93bmVyLWpVM0FjVy1Wc0dTcmhOTmZzWTNMZjV5dQ==";

@@ -9,7 +9,8 @@ class User{
     public function check_password($id, $password){
         $result = 0;
     
-        $text = "SELECT user_password FROM $this->table WHERE user_id = '$id' AND user_password = '$password' LIMIT 0,1";
+        $text = "SELECT member.password FROM $this->table listor $this->joinMember 
+            WHERE listor.id_listor = '$id' AND member.password = '$password' LIMIT 0,1";
         $query = mysql_query($text);
         if(mysql_num_rows($query) == 1){
             $result = 1;
@@ -20,7 +21,7 @@ class User{
     public function check_code($auth_token, $id){//check the token and id before changing the content
         $result = 0;
 
-        $text = "SELECT user_id FROM $this->table WHERE user_auth_token = '$auth_token' AND user_id = '$id' LIMIT 0,1";
+        $text = "SELECT id_listor FROM $this->table WHERE listor_number = '$auth_token' AND id_listor = '$id' LIMIT 0,1";
         $query = mysql_query($text);
         if(mysql_num_rows($query) == 1){
             $result = 1;//can be used
@@ -89,7 +90,8 @@ class User{
     public function update_password($id, $old_password, $new_password){
         $result = 0;
 
-        $text = "UPDATE $this->table SET user_password = '$new_password' WHERE user_id = '$id' AND user_password = '$old_password'";
+        $text = "UPDATE member member SET member.password = '$new_password' WHERE member.id_member =
+            (SELECT id_member FROM $this->table WHERE id_listor = '$id') AND member.password = '$old_password'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;

@@ -196,8 +196,8 @@ if(isset($_GET['action'])){
 				$N_old_password = mysql_real_escape_string($_REQUEST['old_password']);
 				$N_new_password = mysql_real_escape_string($_REQUEST['new_password']);
 				$N_confirm_password = mysql_real_escape_string($_REQUEST['confirm_password']);
-				$old_password = $obj_encrypt->encode($N_old_password);
-				$new_password = $obj_encrypt->encode($N_new_password);
+				$old_password = md5($N_old_password);
+				$new_password = md5($N_new_password);
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
 					$check_password = $obj_user->check_password($N_user_id, $old_password);
