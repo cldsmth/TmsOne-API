@@ -1,7 +1,7 @@
 <?php
 class Kelurahan{
 
-	private $table = "mst_kelurahan";
+	private $table = "kelurahan";
 
     public function get_list_by_kecamatan($kecamatan){
         $result = 0;

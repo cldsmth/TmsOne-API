@@ -4,7 +4,7 @@ class Connection{
 	private $username = 'tsproper_root';
 	private $password = '@aXp4W$Mw6A^';
 	private $hostname = 'localhost';
-	private $database = 'tsproper_tms';
+	private $database = 'tsproper_beta2';
     
 	public function up(){
 		$this->dbh_system = mysql_connect($this->hostname, $this->username, $this->password) or die("Unable to connect to MySQL");

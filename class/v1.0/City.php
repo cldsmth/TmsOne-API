@@ -1,13 +1,13 @@
 <?php
 class City{
 
-	private $table = "mst_subarea";
+	private $table = "kabupaten";
 
     public function get_list_by_province($province){
         $result = 0;
        
-        $text = "SELECT id_subarea, nama_subarea FROM $this->table 
-            WHERE status = 1 AND id_area = '$province' ORDER BY nama_subarea ASC";
+        $text = "SELECT id_kabupaten, nama_kabupaten FROM $this->table 
+            WHERE status = 1 AND id_provinsi = '$province' ORDER BY nama_kabupaten ASC";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
