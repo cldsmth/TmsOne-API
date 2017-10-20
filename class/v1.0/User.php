@@ -1,8 +1,10 @@
 <?php
 class User{
 
-	private $table = "mst_listor";
-    private $joinMember = "LEFT JOIN mst_member member ON member.id_member = listor.id_member";
+	private $table = "listor";
+    private $joinMember = "LEFT JOIN member member ON member.id_member = listor.id_member";
+    private $joinCity = "LEFT JOIN kabupaten city ON city.id_kabupaten = listor.id_kabupaten";
+    private $joinProvince = "LEFT JOIN provinsi province ON province.id_provinsi = city.id_provinsi";
 
     public function check_password($id, $password){
         $result = 0;
@@ -30,13 +32,13 @@ class User{
         $result = 0;//FAILED
         
         $text = "SELECT listor.id_listor, listor.listor_number, listor.nama_lengkap, listor.nama_kartu, listor.email, 
-            '0' AS id_area, 'Area' AS nama_area, '0' AS id_subarea, 'Subarea' AS nama_subarea, listor.tinggi_badan, 
+            province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, listor.tinggi_badan, 
             listor.berat_badan, listor.ukuran_seragam, listor.waktu_kerja, listor.tempat_lahir, listor.tanggal_lahir, 
             listor.kelamin, listor.status_menikah, listor.warga_negara, listor.no_ktp, listor.alamat_lengkap, 
             listor.alamat_surat, listor.agama, listor.telp1, listor.telp2, listor.telp3, listor.no_npwp, listor.instagram, 
             listor.no_wa, listor.nama_bank, listor.cabang_bank, listor.no_rek, listor.photo, listor.ktp_scan FROM 
-            $this->table listor $this->joinMember WHERE member.email = '$email' AND member.password = '$password' 
-            AND member.reg_status = 1 LIMIT 0,1";
+            $this->table listor $this->joinMember $this->joinCity $this->joinProvince WHERE member.email = '$email' 
+            AND member.password = '$password' AND member.reg_status = 1 LIMIT 0,1";
         $query = mysql_query($text);
         if(mysql_num_rows($query) == 1){//HAS TO BE EXACT 1 RESULT
             $row = mysql_fetch_assoc($query);
