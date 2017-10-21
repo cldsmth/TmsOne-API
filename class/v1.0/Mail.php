@@ -23,7 +23,7 @@ class Mail{
         return $result;
     }
 	
-	public function mail_forget_password($name, $password){
+	/*public function mail_forget_password($name, $password){
 		$result = " 
 	        <!DOCTYPE html>
 	        <html>
@@ -46,7 +46,7 @@ class Mail{
 	        </html>
         	";
         return $result;
-	}
+	}*/
 
 }
 ?>

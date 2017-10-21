@@ -64,26 +64,29 @@ class User{
         return $result;
     }
 
-    public function update_data($id, $name, $card_name, $province, $city, $height, $weight, $size, $work, $tempat_lahir, $birthday, $gender, $status_menikah, $warga_negara, $address, $mail_address, $religion, $phone1, $phone2, $phone3, $npwp, $instagram, $whatsapp, $bank, $cabang, $no_rek, $img, $img_thmb, $scan, $scan_thmb, $path){
+    public function update_data($id, $name, $card_name, $city, $height, $weight, $size, $work, $tempat_lahir, $birthday, $gender, $status_menikah, $warga_negara, $address, $mail_address, $religion, $phone1, $phone2, $phone3, $npwp, $instagram, $whatsapp, $bank, $cabang, $no_rek, $img, $scan, $path){
         $result = 0;
         $condImg = "";
-        if($img != ""){
-            $this->remove_image_field($id, "user_img", "user_img_thmb", $path);
-            $condImg = ", user_img = '$img', user_img_thmb = '$img_thmb'";
-        }
         $condScan = "";
-        if($scan != ""){
-            $this->remove_image_field($id, "user_scan", "user_scan_thmb", $path);
-            $condScan = ", user_scan = '$scan', user_scan_thmb = '$scan_thmb'";
+
+        if($img != ""){
+            $this->remove_image($id, "photo", $path);
+            $condImg = ", photo = '$img'";
         }
 
-        $text = "UPDATE $this->table SET user_name = '$name', user_card_name = '$card_name', user_province = '$province', user_city = '$city', user_height = '$height', user_weight = '$weight', user_size = '$size', user_work = '$work', user_tempat_lahir = '$tempat_lahir', user_birthday = '$birthday', user_gender = '$gender',
-            user_status_menikah = '$status_menikah', user_warga_negara = '$warga_negara', user_address = '$address', user_mail_address = '$mail_address', user_religion = '$religion', user_phone1 = '$phone1', user_phone2 = '$phone2', user_phone3 = '$phone3', user_npwp = '$npwp', user_instagram = '$instagram', user_whatsapp = '$whatsapp',
-            user_bank = '$bank', user_cabang = '$cabang', user_no_rek = '$no_rek' $condImg $condScan WHERE user_id = '$id'";
-        $query = mysql_query($text);    
+        if($scan != ""){
+            $this->remove_image($id, "ktp_scan", $path);
+            $condScan = ", ktp_scan = '$scan'";
+        }
+
+        $text = "UPDATE $this->table SET nama_lengkap = '$name', nama_kartu = '$card_name', id_kabupaten = '$city', tinggi_badan = '$height', berat_badan = '$weight', ukuran_seragam = '$size', waktu_kerja = '$work', tempat_lahir = '$tempat_lahir', tanggal_lahir = '$birthday', kelamin = '$gender',
+            status_menikah = '$status_menikah', warga_negara = '$warga_negara', alamat_lengkap = '$address', alamat_surat = '$mail_address', agama = '$religion', telp1 = '$phone1', telp2 = '$phone2', telp3 = '$phone3', no_npwp = '$npwp', instagram = '$instagram', no_wa = '$whatsapp',
+            nama_bank = '$bank', cabang_bank = '$cabang', no_rek = '$no_rek' $condImg $condScan WHERE id_listor = '$id'";
+        $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
         }
+        //$result = $text;
         return $result;
     }
 
@@ -99,29 +102,29 @@ class User{
         return $result;
     }
 
-    public function remove_image_field($id, $field, $field_thmb, $path){
+    public function remove_image($id, $field, $path){
         $result = 0;
-        $flag_img = 0;
-        $flag_img_thmb = 0;
 
-        $text = "SELECT $field, $field_thmb FROM $this->table WHERE user_id = '$id'";
+        $text = "SELECT $field FROM $this->table WHERE id_listor = '$id'";
         $query = mysql_query($text);
         if(mysql_num_rows($query) == 1){
             $row = mysql_fetch_assoc($query);
-            if($row[$field] != "" && $row[$field_thmb] != ""){
-                $deleteImg = $path.$row[$field];
+            $value = $row[$field];
+            if($value != ""){
+                switch ($field) {
+                    case "photo":
+                        $dir = "tmc_photo/";
+                        break;
+                    case "ktp_scan":
+                        $dir = "ktp_image/";
+                        break;
+                    default:
+                        $dir = "";
+                        break;
+                }
+                $deleteImg = $path.$dir.$value;
                 if (file_exists($deleteImg)) {
                     unlink($deleteImg);
-                    $flag_img = 1;
-                }
-
-                $deleteImgThmb = $path.$row[$field_thmb];
-                if (file_exists($deleteImgThmb)) {
-                    unlink($deleteImgThmb);
-                    $flag_img_thmb = 1;
-                }
-                
-                if($flag_img == 1 && $flag_img_thmb ==1){
                     $result = 1;
                 }
             }

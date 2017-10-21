@@ -1,10 +1,9 @@
 <?php
+$root = $_SERVER['DOCUMENT_ROOT'];
 $global['absolute-url'] = "http://tms-one.com/mobile/";
-$global['root-url'] = $_SERVER['DOCUMENT_ROOT']."/mobile/";
+$global['root-url'] = $root."/mobile/";
 $global['root-url-model'] = $global['root-url']."class/";
-$global['api'] = $global['absolute-url']."api/";
-$global['path-head'] = "packages/head.php";
-$global['path-config'] = "packages/front_config.php";
+$global['root-url-image'] = $root."/assets/media/";
 $seo['company-name'] = "TMS One";
 
 //config for smtp email

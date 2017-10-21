@@ -17,9 +17,6 @@ if(isset($_GET['action'])){
 			require_once($global['root-url-model']."/Connection.php");
 			$obj_connect = new Connection();
 			
-			require_once($global['root-url-model']."/Encryption.php");
-			$obj_encrypt = new Encryption();
-
 			require_once($global['root-url-model'].$version."/User.php");
 			$obj_user = new User();
 
@@ -52,7 +49,7 @@ if(isset($_GET['action'])){
 				$obj_connect->up();	
 				$R_message = array("status" => "400", "message" => "Forget Password Failed");
 				
-				$N_email = mysql_real_escape_string($_POST['email']);
+				/*$N_email = mysql_real_escape_string($_POST['email']);
 
 		        $result = $obj_user->get_forget_password($N_email);
 				if(is_array($result)){
@@ -62,7 +59,7 @@ if(isset($_GET['action'])){
 					if($mail){
 						$R_message = array("status" => "200", "message" => "Forget password Success");
 					}
-				}
+				}*/
 
 				$obj_connect->down();
 				echo json_encode($R_message);	
@@ -78,7 +75,6 @@ if(isset($_GET['action'])){
 
 				$N_name = mysql_real_escape_string($_REQUEST['name']);
 				$N_card_name = mysql_real_escape_string($_REQUEST['card_name']);
-				$N_province = mysql_real_escape_string($_REQUEST['province']);
 				$N_city = mysql_real_escape_string($_REQUEST['city']);
 				$N_height = mysql_real_escape_string($_REQUEST['height']);
 				$N_weight = mysql_real_escape_string($_REQUEST['weight']);
@@ -101,39 +97,23 @@ if(isset($_GET['action'])){
 				$N_bank = mysql_real_escape_string($_REQUEST['bank']);
 				$N_cabang = mysql_real_escape_string($_REQUEST['cabang']);
 				$N_no_rek = mysql_real_escape_string($_REQUEST['no_rek']);
-				$image_loc1 = "";
-				$image_locThmb1 = "";
-				$scan_loc1 = "";
-				$scan_locThmb1 = "";
+				$image_name = "";
+				$scan_name = "";
 
-				require_once($global['root-url']."packages/SimpleImage.php"); // class simple image
 				if(isset($_FILES['image']['name'])){
 					if(!empty($_FILES['image']['name'])){
 						$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
-						$file_name = cleanSpace($_FILES['image']['name']);
-						$file_ext = strtolower(end(explode('.', $file_name)));
+						$file_name = $_FILES['image']['name'];
+						$file_ext_tmp = explode('.', $file_name);
+						$file_ext = strtolower(end($file_ext_tmp));
 						$file_size = $_FILES['image']['size'];
 						$file_tmp = $_FILES['image']['tmp_name'];
-						$ran = rand();
-			    		$timestamp = time();
 						
 						if(in_array($file_ext, $allowed_ext) === true){
 							if($file_size < 10044070){
-								//save image in server
-								$image_loc = $global['root-url']."uploads/user/".$timestamp.$ran.$file_name; 
-								$image_locThmb = $global['root-url']."uploads/user-thmb/".$timestamp.$ran.$file_name;
-
-								//save image in database
-								$image_loc1 = "uploads/user/".$timestamp.$ran.$file_name; 
-								$image_locThmb1 = "uploads/user-thmb/".$timestamp.$ran.$file_name;
-
-								if(move_uploaded_file($file_tmp, $image_loc))
-								{
-									$image = new SimpleImage();
-									$image->load($image_loc);
-									$image->resize(200,200);
-									$image->save($image_locThmb);
-								}
+								$image_name = "TMC_".md5($file_name).".".$file_ext;
+								$image_loc = $global['root-url-image']."tmc_photo/".$image_name; 
+								move_uploaded_file($file_tmp, $image_loc);
 							}
 						}
 					}
@@ -142,8 +122,9 @@ if(isset($_GET['action'])){
 				if(isset($_FILES['scan']['name'])){
 					if(!empty($_FILES['scan']['name'])){
 						$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
-						$file_name = cleanSpace($_FILES['scan']['name']);
-						$file_ext = strtolower(end(explode('.', $file_name)));
+						$file_name = $_FILES['scan']['name'];
+						$file_ext_tmp = explode('.', $file_name);
+						$file_ext = strtolower(end($file_ext_tmp));
 						$file_size = $_FILES['scan']['size'];
 						$file_tmp = $_FILES['scan']['tmp_name'];
 						$ran = rand();
@@ -151,28 +132,19 @@ if(isset($_GET['action'])){
 						
 						if(in_array($file_ext, $allowed_ext) === true){
 							if($file_size < 10044070){
-								//save image in server
-								$scan_loc = $global['root-url']."uploads/user/".$timestamp.$ran.$file_name; 
-								$scan_locThmb = $global['root-url']."uploads/user-thmb/".$timestamp.$ran.$file_name;
-
-								//save image in database
-								$scan_loc1 = "uploads/user/".$timestamp.$ran.$file_name; 
-								$scan_locThmb1 = "uploads/user-thmb/".$timestamp.$ran.$file_name;
-
-								if(move_uploaded_file($file_tmp, $scan_loc))
-								{
-									$image = new SimpleImage();
-									$image->load($scan_loc);
-									$image->resize(200,200);
-									$image->save($scan_locThmb);
-								}
+								$scan_name = md5($file_name).".".$file_ext;
+								$scan_loc = $global['root-url-image']."ktp_image/".$scan_name;
+								move_uploaded_file($file_tmp, $scan_loc);
 							}
 						}
 					}
 				}
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					$result = $obj_user->update_data($N_user_id, $N_name, $N_card_name, $N_province, $N_city, $N_height, $N_weight, $N_size, $N_work, $N_tempat_lahir, $N_birthday, $N_gender, $N_status_menikah, $N_warga_negara, $N_address, $N_mail_address, $N_religion, $N_phone1, $N_phone2, $N_phone3, $N_npwp, $N_instagram, $N_whatsapp, $N_bank, $N_cabang, $N_no_rek, $image_loc1, $image_locThmb1, $scan_loc1, $scan_locThmb1, $global['root-url']);
+					$result = $obj_user->update_data($N_user_id, $N_name, $N_card_name, $N_city, $N_height, $N_weight, $N_size, $N_work, $N_tempat_lahir, 
+						$N_birthday, $N_gender, $N_status_menikah, $N_warga_negara, $N_address, $N_mail_address, $N_religion, $N_phone1, $N_phone2, $N_phone3, 
+						$N_npwp, $N_instagram, $N_whatsapp, $N_bank, $N_cabang, $N_no_rek, $image_name, $scan_name, $global['root-url-image']);
+					//var_dump($result);
 					if($result == 1){
 						$R_message = array("status" => "200", "message" => "Edit profile success");
 					}
