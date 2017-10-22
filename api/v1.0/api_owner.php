@@ -69,7 +69,6 @@ if(isset($_GET['action'])){
 				$N_tempat_lahir = mysql_real_escape_string($_REQUEST['tempat_lahir']);
 				$N_birthday = mysql_real_escape_string($_REQUEST['birthday']);
 				$N_gender = mysql_real_escape_string($_REQUEST['gender']);
-				$N_province = mysql_real_escape_string($_REQUEST['province']);
 				$N_city = mysql_real_escape_string($_REQUEST['city']);
 				$N_kecamatan = mysql_real_escape_string($_REQUEST['kecamatan']);
 				$N_kelurahan = mysql_real_escape_string($_REQUEST['kelurahan']);
@@ -78,13 +77,13 @@ if(isset($_GET['action'])){
 				$N_phone2 = mysql_real_escape_string($_REQUEST['phone2']);
 				$N_phone3 = mysql_real_escape_string($_REQUEST['phone3']);
 				$N_ktp = mysql_real_escape_string($_REQUEST['ktp']);
-				$N_status = "success";
+				$N_status = 1;
 				$N_create_date = mysql_real_escape_string($_REQUEST['create_date']);
 				$file_loc1 = "";
 				$file_locThmb1 = "";
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					if(isset($_FILES['image']['name'])){
+					/*if(isset($_FILES['image']['name'])){
 						if(!empty($_FILES['image']['name'])){
 							require_once($global['root-url']."packages/SimpleImage.php"); // class simple image
 							$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
@@ -121,23 +120,25 @@ if(isset($_GET['action'])){
 						}else{
 							$R_message = array("status" => "404", "message" => "Upload file is empty");
 						}
-					}
+					}*/
 
 					$check_exist = $obj_owner->check_exist($N_token);
 					//var_dump($check_exist);
 					if($check_exist == 0){
-						$result = $obj_owner->insert_data($N_user_id, $N_token, $N_name, $N_email, $N_tempat_lahir, $N_birthday, $N_gender, $N_province, $N_city, $N_kecamatan, $N_kelurahan, $N_address, $N_phone1, $N_phone2, $N_phone3, $N_ktp, $file_loc1, $file_locThmb1, $N_status, $N_create_date);
+						$result = $obj_owner->insert_data($N_user_id, $N_name, $N_email, $N_tempat_lahir, $N_birthday, $N_gender, $N_city, $N_kecamatan, $N_kelurahan, $N_address, $N_phone1, $N_phone2, $N_phone3, $N_ktp, $file_loc1, $N_status, $N_create_date);
 						//var_dump($result);
-						if($result == 1){
+						if($result >= 1){
 							$R_message = array("status" => "201", "message" => "Insert Data Success");
+							$R_message['data']['id'] = $result;
 						}else{
 							$R_message = array("status" => "400", "message" => "Insert Data Failed");
 						}
 					}else{
-						$result = $obj_owner->update_data($N_token, $N_name, $N_email, $N_tempat_lahir, $N_birthday, $N_gender, $N_province, $N_city, $N_kecamatan, $N_kelurahan, $N_address, $N_phone1, $N_phone2, $N_phone3, $N_ktp, $file_loc1, $file_locThmb1, $global['root-url']);
+						$result = $obj_owner->update_data($N_token, $N_name, $N_email, $N_tempat_lahir, $N_birthday, $N_gender, $N_city, $N_kecamatan, $N_kelurahan, $N_address, $N_phone1, $N_phone2, $N_phone3, $N_ktp, $file_loc1, $global['root-url-image']);
 						//var_dump($result);
 						if($result == 1){
 							$R_message = array("status" => "200", "message" => "Update Data Success");
+							$R_message['data']['id'] = $N_token;
 						}else{
 							$R_message = array("status" => "400", "message" => "Update Data Failed");
 						}

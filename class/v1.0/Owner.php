@@ -12,7 +12,7 @@ class Owner{
     public function check_exist($token){
         $result = 0;
 
-        $text = "SELECT owner_token FROM $this->table WHERE owner_token = '$token'";
+        $text = "SELECT id_owner FROM $this->table WHERE id_owner = '$token'";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $row = mysql_fetch_array($query, MYSQL_ASSOC);
@@ -101,30 +101,29 @@ class Owner{
         return $result;
     }
 
-    public function insert_data($user_id, $token, $name, $email, $tempat_lahir, $birthday, $gender, $province, $city, $kecamatan, $kelurahan, $address, $phone1, $phone2, $phone3, $ktp, $img, $img_thmb, $status, $create_date){
+    public function insert_data($user_id, $name, $email, $tempat_lahir, $birthday, $gender, $city, $kecamatan, $kelurahan, $address, $phone1, $phone2, $phone3, $ktp, $img, $status, $create_date){
         $result = 0;
 
-        $text = "INSERT INTO $this->table (owner_user_id, owner_token, owner_name, owner_email, owner_tempat_lahir, owner_birthday, owner_gender, owner_province, owner_city, owner_kecamatan, owner_kelurahan, owner_address, owner_phone1, owner_phone2, owner_phone3, owner_ktp, owner_img, owner_img_thmb, owner_status, owner_create_date) 
-            VALUES ('$user_id', '$token', '$name', '$email', '$tempat_lahir', '$birthday', '$gender', '$province', '$city', '$kecamatan', '$kelurahan', '$address', '$phone1', '$phone2', '$phone3', '$ktp', '$img', '$img_thmb', '$status', '$create_date')";
+        $text = "INSERT INTO $this->table (id_listor, nama_lengkap, email, tempat_lahir, tanggal_lahir, kelamin, id_kabupaten, id_kecamatan, id_kelurahan, alamat_lengkap, telp1, telp2, telp3, no_ktp, photo, status, add_date) 
+            VALUES ('$user_id', '$name', '$email', '$tempat_lahir', '$birthday', '$gender', '$city', '$kecamatan', '$kelurahan', '$address', '$phone1', '$phone2', '$phone3', '$ktp', '$img', '$status', '$create_date')";
         $query = mysql_query($text);
         if($query){
-            $result = 1;
+            $result = mysql_insert_id();
         }
         //$result = $text;
         return $result;
     }
 
-    public function update_data($token, $name, $email, $tempat_lahir, $birthday, $gender, $province, $city, $kecamatan, $kelurahan, $address, $phone1, $phone2, $phone3, $ktp, $img, $img_thmb, $path){
+    public function update_data($token, $name, $email, $tempat_lahir, $birthday, $gender, $city, $kecamatan, $kelurahan, $address, $phone1, $phone2, $phone3, $ktp, $img, $path){
         $result = 0;
         $cond = "";
-        if($img != "" && $img_thmb != ""){
-            $this->remove_image($token, $path); //remove image before
-            $cond = ", owner_img = '$img', owner_img_thmb = '$img_thmb'";
+        if($img != ""){
+            //$this->remove_image($token, $path); //remove image before
+            $cond = ", owner_img = '$img'";
         }
 
-        $text = "UPDATE $this->table SET owner_name = '$name', owner_email = '$email', owner_tempat_lahir = '$tempat_lahir', owner_birthday = '$birthday', owner_gender = '$gender', owner_province = '$province', 
-            owner_city = '$city', owner_kecamatan = '$kecamatan', owner_kelurahan = '$kelurahan', owner_address = '$address', owner_phone1 = '$phone1', owner_phone2 = '$phone2', owner_phone3 = '$phone3', 
-            owner_ktp = '$ktp' $cond WHERE owner_token = '$token'";
+        $text = "UPDATE $this->table SET nama_lengkap = '$name', email = '$email', tempat_lahir = '$tempat_lahir', tanggal_lahir = '$birthday', kelamin = '$gender', id_kabupaten = '$city', 
+            id_kecamatan = '$kecamatan', id_kelurahan = '$kelurahan', alamat_lengkap = '$address', telp1 = '$phone1', telp2 = '$phone2', telp3 = '$phone3', no_ktp = '$ktp' $cond WHERE id_owner = '$token'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
