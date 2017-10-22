@@ -1,9 +1,13 @@
 <?php
 class Owner{
 
-	private $table = "t_owner";
+	private $table = "owner";
     private $itemPerPage = 6;
-    private $joinProperty = "LEFT JOIN t_property ON property_owner = owner_token";
+    private $joinProperty = "LEFT JOIN produk property ON property.id_owner = owner.id_owner";
+    private $joinCity = "LEFT JOIN kabupaten city ON city.id_kabupaten = owner.id_kabupaten";
+    private $joinKecamatan = "LEFT JOIN kecamatan kecamatan ON kecamatan.id_kecamatan = owner.id_kecamatan";
+    private $joinKelurahan = "LEFT JOIN kelurahan kelurahan ON kelurahan.id_kelurahan = owner.id_kelurahan";
+    private $joinProvince = "LEFT JOIN provinsi province ON province.id_provinsi = city.id_provinsi";
 
     public function check_exist($token){
         $result = 0;
@@ -29,17 +33,17 @@ class Owner{
                 $q_string .= "'".$i->token."'".$seperate;
                 $count++;
             }
-            $cond = "AND owner_token NOT IN(".$q_string.")";
+            $cond = "AND owner.id_owner NOT IN(".$q_string.")";
         }else{
             $cond = "";
         }
 
-        $text = "SELECT COUNT(property_token) AS counter, owner_id, owner_user_id, owner_token, owner_name, 
-            owner_email, owner_tempat_lahir, owner_birthday, owner_gender, owner_province, owner_city,
-            owner_kecamatan, owner_kelurahan, owner_address, owner_phone1, owner_phone2, owner_phone3, 
-            owner_ktp, owner_img, owner_status, owner_create_date FROM $this->table $this->joinProperty 
-            WHERE owner_status = 'success' AND owner_user_id = '$user_id' $cond GROUP BY owner_token 
-            ORDER BY owner_create_date ASC";
+        $text = "SELECT COUNT(property.id_produk) AS counter, owner.id_owner, owner.id_listor, owner.alamat_lengkap, 
+            owner.email, owner.tempat_lahir, owner.tanggal_lahir, owner.kelamin, province.id_provinsi, province.nama_provinsi, 
+            city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, kecamatan.nama_kecamatan, kelurahan.id_kelurahan, 
+            kelurahan.nama_kelurahan, owner.alamat_lengkap, owner.telp1, owner.telp2, owner.telp3, owner.no_ktp, owner.photo, 
+            owner.status, owner.add_date FROM $this->table $this->joinProperty $this->joinCity $this->joinKecamatan $this->joinKelurahan
+            $this->joinProvince WHERE owner.status = 1 AND owner.id_listor = '$user_id' $cond GROUP BY owner.id_owner ORDER BY owner.add_date ASC";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
@@ -60,7 +64,7 @@ class Owner{
                 $q_string = "";
                 $last_index = intval(count($keywords)) - 1;
                 for($i = 0; $i < count($keywords); $i++){
-                    $q_string = $q_string . " owner_name LIKE '%".$keywords[$i]."%' ";
+                    $q_string = $q_string . " nama_lengkap LIKE '%".$keywords[$i]."%' ";
                     if($i != $last_index){
                       $q_string = $q_string . " OR ";
                     }
@@ -70,7 +74,7 @@ class Owner{
         }
 
         //get total data
-        $text_total = "SELECT owner_id FROM $this->table WHERE owner_status = 'success' $cond";
+        $text_total = "SELECT id_owner FROM $this->table WHERE status = 1 $cond";
         $query_total = mysql_query($text_total);
         $total_data = mysql_num_rows($query_total);
         $total_data = $total_data < 1 ? 0 : $total_data;
@@ -79,8 +83,8 @@ class Owner{
         $total_page = ceil($total_data / $this->itemPerPage);
         $limitBefore = $page <= 1 || $page == null ? 0 : ($page-1) * $this->itemPerPage;
 
-        $text = "SELECT * FROM $this->table WHERE owner_status = 'success' $cond
-            ORDER BY owner_create_date DESC LIMIT $limitBefore, $this->itemPerPage";
+        $text = "SELECT * FROM $this->table WHERE status = 1 $cond
+            ORDER BY add_date DESC LIMIT $limitBefore, $this->itemPerPage";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
