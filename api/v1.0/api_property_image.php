@@ -32,44 +32,31 @@ if(isset($_GET['action'])){
 				$N_auth_token = mysql_real_escape_string($_REQUEST['auth_token']);
 
 				//field
-				$N_token = mysql_real_escape_string($_REQUEST['token']);
 				$N_property = mysql_real_escape_string($_REQUEST['property']);
-				$N_status = "success";
+				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
+				$N_create_date = mysql_real_escape_string($_REQUEST['create_date']);
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
 					if(isset($_FILES['image']['name'])){
 						if(!empty($_FILES['image']['name'])){
-							require_once($global['root-url']."packages/SimpleImage.php"); // class simple image
 							$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
-							$file_name = cleanSpace($_FILES['image']['name']);
-							$file_ext = strtolower(end(explode('.', $file_name)));
+							$file_name = $_FILES['image']['name'];
+							$file_ext_tmp = explode('.', $file_name);
+							$file_ext = strtolower(end($file_ext_tmp));
 							$file_size = $_FILES['image']['size'];
 							$file_tmp = $_FILES['image']['tmp_name'];
-							$ran = rand();
-				    		$timestamp = time();
 							
 							if(in_array($file_ext, $allowed_ext) === true){
 								if($file_size < 10044070){
-									//save image in server
-									$file_loc = $global['root-url']."uploads/property/".$timestamp.$ran.$file_name; 
-									$file_locThmb = $global['root-url']."uploads/property-thmb/".$timestamp.$ran.$file_name;
+									$image_name = "product_".md5($file_name).".".$file_ext;
+									$image_loc = $global['root-url-image']."produk_photo/".$image_name; 
+									move_uploaded_file($file_tmp, $image_loc);
 
-									//save image in database
-									$file_loc1 = "uploads/property/".$timestamp.$ran.$file_name; 
-									$file_locThmb1 = "uploads/property-thmb/".$timestamp.$ran.$file_name;
-
-									if(move_uploaded_file($file_tmp, $file_loc))
-									{
-										$image = new SimpleImage();
-										$image->load($file_loc);
-										$image->resize(200,200);
-										$image->save($file_locThmb);
-									}
-
-									$result = $obj_image->insert_data($N_token, $N_property, $file_loc1, $file_locThmb1, $N_status);
+									$result = $obj_image->insert_data($N_property, $N_type, $image_name, $N_create_date);
 									//var_dump($result);
-									if($result == 1){
+									if($result >= 1){
 										$R_message = array("status" => "200", "message" => "Insert Data Success");
+										$R_message['data']['id'] = $result;
 									}
 								}else{
 									$R_message = array("status" => "413", "message" => "ERROR: file size max 10 MB!");

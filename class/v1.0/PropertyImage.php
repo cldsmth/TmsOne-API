@@ -35,15 +35,18 @@ class PropertyImage{
         return $result;
     }
 
-	public function insert_data($token, $property, $img, $img_thmb, $status){
+	public function insert_data($property, $type, $img, $create_date){
 		$result = 0;
+        $varField = $type == "" ? "" : "request";
+        $varTable = $type == "" ? "" : "_request";
 
-		$text = "INSERT INTO $this->table (pi_token, pi_property, pi_img, pi_img_thmb, pi_status) 
-			VALUES('$token', '$property', '$img', '$img_thmb', '$status')";
+		$text = "INSERT INTO $this->table$varTable (id_produk$varField, file_photo, add_date) 
+            VALUES ('$property', '$img', '$create_date')";
 		$query = mysql_query($text);
 		if($query){
-			$result = 1;
+			$result = mysql_insert_id();
 		}
+        //$result = $text;
 		return $result;
 	}
 
