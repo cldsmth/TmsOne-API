@@ -1,7 +1,8 @@
 <?php
 class Property{
 
-	private $table = "t_property";
+	private $table = "produk";
+    private $tableRequest = "produk_request";
 
     public function check_exist($token){
         $result = 0;
@@ -27,27 +28,51 @@ class Property{
                 $q_string .= "'".$i->token."'".$seperate;
                 $count++;
             }
-            $cond = "AND property_token NOT IN(".$q_string.")";
+            $cond = "AND id NOT IN(".$q_string.")";
         }else{
             $cond = "";
         }
 
-        $text = "SELECT property_id, property_token, property_owner, property_title, property_hak, property_province,
-            property_city, property_kecamatan, property_kelurahan, property_address, property_zip, property_jual_beli, 
-            property_type, property_status_property, property_sertifikat, property_promo, property_menghadap, 
-            property_lebar_depan, property_panjang_tanah, property_luas_tanah, property_luas_bangunan, property_bed, 
-            property_bed_plus, property_bath, property_bath_plus, property_floor, property_daya_listrik, property_sumber_air,
-            property_fasilitas, property_description, property_hashtag, property_price, property_komisi, property_status, 
-            property_create_date FROM $this->table WHERE property_status = 'success' $cond ORDER BY property_create_date ASC";
+        $textProperty = "SELECT property.id_produk AS id, property.id_owner, property.id_listor, property.judul_produk, '' AS hak, 
+            province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
+            kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, property.alamat_detail, property.kode_pos, 
+            '' AS jual_beli, '' AS category, property.status_properti, property.jenis_sertifikat, property.promo, property.hadap_rumah, 
+            property.lebar_muka, property.panjang_dalam, property.luas_tanah, property.luas_bangunan, property.jumlah_kamar, 
+            property.jumlah_kamarplus, property.jumlah_kamarmandi, '' AS jumlah_kamarmandiplus, property.jumlah_lantai, 
+            '' AS daya_listrik, '' AS sumber_air, property.fasilitas, property.detail_produk, property.hashtag, property.harga, 
+            property.komisi, '' AS type, property.status, property.add_date FROM $this->table property 
+            LEFT JOIN kabupaten city ON city.id_kabupaten = property.id_kabupaten
+            LEFT JOIN kecamatan kecamatan ON kecamatan.id_kecamatan = property.id_kecamatan
+            LEFT JOIN kelurahan kelurahan ON kelurahan.id_kelurahan = property.id_kelurahan
+            LEFT JOIN provinsi province ON province.id_provinsi = city.id_provinsi
+            WHERE property.id_listor = '$user_id'";
+        $textRequest = "SELECT request.id_produkrequest AS id, request.id_owner, request.id_listor, request.judul_produk, '' AS hak, 
+            province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
+            kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, request.alamat_detail, request.kode_pos, 
+            '' AS jual_beli, '' AS category, request.status_properti, request.jenis_sertifikat, request.promo, request.hadap_rumah, 
+            request.lebar_muka, request.panjang_dalam, request.luas_tanah, request.luas_bangunan, request.jumlah_kamar, 
+            request.jumlah_kamarplus, request.jumlah_kamarmandi, '' AS jumlah_kamarmandiplus, request.jumlah_lantai, 
+            '' AS daya_listrik, '' AS sumber_air, request.fasilitas, request.detail_produk, request.hashtag, request.harga, 
+            request.komisi, 'request' AS type, 0 AS status, request.add_date FROM $this->tableRequest request 
+            LEFT JOIN kabupaten city ON city.id_kabupaten = request.id_kabupaten
+            LEFT JOIN kecamatan kecamatan ON kecamatan.id_kecamatan = request.id_kecamatan
+            LEFT JOIN kelurahan kelurahan ON kelurahan.id_kelurahan = request.id_kelurahan
+            LEFT JOIN provinsi province ON province.id_provinsi = city.id_provinsi
+            WHERE request.id_listor = '$user_id'";
+        
+        $text = "SELECT * FROM (($textProperty) UNION ALL ($textRequest)) 
+            items HAVING status IN(0,1) $cond ORDER BY add_date ASC";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
             $loop = 0;
             while($row = mysql_fetch_assoc($query)){
                 $result[$loop] = $row;
+                $varField = $row['type'] == "" ? "" : "request";
+                $varTable = $row['type'] == "" ? "" : "_request";
 
-                $text_detail = "SELECT pi_id, pi_token, pi_property, pi_img, pi_img_thmb, pi_status 
-                	FROM t_property_image WHERE pi_property = '{$row['property_token']}'";
+                $text_detail = "SELECT id_photo, id_produk$varField AS id_property, file_photo
+                	FROM photo_produk$varTable WHERE id_produk$varField = '{$row['id']}'";
                 $query_detail = mysql_query($text_detail);
                 if(mysql_num_rows($query_detail) >= 1){
                     while($row_detail = mysql_fetch_array($query_detail, MYSQL_ASSOC)){
