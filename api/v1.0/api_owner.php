@@ -167,10 +167,10 @@ if(isset($_GET['action'])){
 				$N_token = mysql_real_escape_string($_REQUEST['token']);
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					$result = $obj_owner->delete_data($N_token, $global['root-url']);
+					$result = $obj_owner->delete_data($N_token, $global['root-url-image']);
 					//var_dump($result);
 					if($result >= 1){
-						$obj_property->delete_data_by_owner($N_token, $global['root-url']);
+						//$obj_property->delete_data_by_owner($N_token, $global['root-url-image']);
 						$R_message = array("status" => "200", "message" => "Delete success");
 					}
 				}//check code

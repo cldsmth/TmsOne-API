@@ -136,7 +136,7 @@ class Owner{
         $result = 0;
         $this->remove_image($token, $path); //remove image before
 
-        $text = "DELETE FROM $this->table WHERE owner_token = '$token'";
+        $text = "DELETE FROM $this->table WHERE id_owner = '$token'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
