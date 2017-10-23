@@ -99,10 +99,11 @@ if(isset($_GET['action'])){
 				$N_user_id = mysql_real_escape_string($_REQUEST['user_id']);
 				$N_auth_token = mysql_real_escape_string($_REQUEST['auth_token']);
 				$N_property = mysql_real_escape_string($_REQUEST['property']);
+				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
 				$N_data = isset($_REQUEST['data']) ? $_REQUEST['data'] : "";
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					$result = $obj_image->get_image_sync_by_property($N_property, $N_data);
+					$result = $obj_image->get_image_sync_by_property($N_property, $N_type, $N_data);
 					//var_dump($result);
 					if(is_array($result)){
 						$R_message = array("status" => "200", "message" => "Data Exist", "data" => $result);

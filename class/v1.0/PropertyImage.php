@@ -1,10 +1,13 @@
 <?php
 class PropertyImage{
 
-	private $table = "t_property_image";
+	private $table = "photo_produk";
 
-    public function get_image_sync_by_property($property, $datas){
+    public function get_image_sync_by_property($property, $type, $datas){
         $result = 0;
+        $varField = $type == "" ? "" : "request";
+        $varTable = $type == "" ? "" : "_request";
+
         $data = json_decode($datas);
         if(is_array($data)){
             $q_string = "";
@@ -14,13 +17,13 @@ class PropertyImage{
                 $q_string .= "'".$i->token."'".$seperate;
                 $count++;
             }
-            $cond = "AND pi_token NOT IN(".$q_string.")";
+            $cond = "AND id_photo NOT IN(".$q_string.")";
         }else{
             $cond = "";
         }
 
-        $text = "SELECT pi_token, pi_property, pi_img, pi_img_thmb, pi_status FROM $this->table 
-            WHERE pi_status = 'success' AND pi_property = '$property' $cond";
+        $text = "SELECT id_photo, id_produk$varField AS id_property, file_photo 
+            FROM $this->table$varTable WHERE id_produk$varField = '$property' $cond";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
