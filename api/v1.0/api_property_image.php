@@ -82,9 +82,10 @@ if(isset($_GET['action'])){
 			else if($_GET['action'] == 'sync' && isset($_REQUEST['user_id']) && isset($_REQUEST['auth_token'])){//START sync
 				$obj_connect->up();	
 				$R_message = array("status" => "400", "message" => "No Data");
-				
 				$N_user_id = mysql_real_escape_string($_REQUEST['user_id']);
 				$N_auth_token = mysql_real_escape_string($_REQUEST['auth_token']);
+
+				//field
 				$N_property = mysql_real_escape_string($_REQUEST['property']);
 				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
 				$N_data = isset($_REQUEST['data']) ? $_REQUEST['data'] : "";
@@ -109,13 +110,15 @@ if(isset($_GET['action'])){
 			else if($_GET['action'] == 'delete_data' && isset($_REQUEST['user_id']) && isset($_REQUEST['auth_token'])){//START delete
 				$obj_connect->up();	
 				$R_message = array("status" => "400", "message" => "Delete failed");
-				
 				$N_user_id = mysql_real_escape_string($_REQUEST['user_id']);
 				$N_auth_token = mysql_real_escape_string($_REQUEST['auth_token']);
+
+				//field
 				$N_token = mysql_real_escape_string($_REQUEST['token']);
+				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					$result = $obj_image->delete_data($N_token, $global['root-url']);
+					$result = $obj_image->delete_data($N_token, $N_type, $global['root-url-image']);
 					//var_dump($result);
 					if($result >= 1){
 						$R_message = array("status" => "200", "message" => "Delete success");

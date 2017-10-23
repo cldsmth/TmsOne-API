@@ -50,11 +50,12 @@ class PropertyImage{
 		return $result;
 	}
 
-	public function delete_data($token, $path){
+	public function delete_data($token, $type, $path){
         $result = 0;
-        $this->remove_image($token, $path); //remove image before
+        $varTable = $type == "" ? "" : "_request";
+        $this->remove_image($token, $type, $path); //remove image before
 
-        $text = "DELETE FROM $this->table WHERE pi_token = '$token'";
+        $text = "DELETE FROM $this->table$varTable WHERE id_photo = '$token'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
@@ -62,29 +63,19 @@ class PropertyImage{
         return $result;
     }
 
-    public function remove_image($token, $path){
+    public function remove_image($token, $type, $path){
         $result = 0;
-        $flag_img = 0;
-        $flag_img_thmb = 0;
+        $varTable = $type == "" ? "" : "_request";
 
-        $text = "SELECT pi_img, pi_img_thmb FROM $this->table WHERE pi_token = '$token'";
+        $text = "SELECT id_photo, file_photo FROM $this->table$varTable WHERE id_photo = '$token'";
         $query = mysql_query($text);
         if(mysql_num_rows($query) == 1){
             $row = mysql_fetch_assoc($query);
-            if($row['pi_img'] != "" && $row['pi_img_thmb'] != ""){
-                $deleteImg = $path.$row['pi_img'];
+            $value = $row['file_photo'];
+            if($value != ""){
+                $deleteImg = $path."produk_photo/".$value;
                 if (file_exists($deleteImg)) {
                     unlink($deleteImg);
-                    $flag_img = 1;
-                }
-
-                $deleteImgThmb = $path.$row['pi_img_thmb'];
-                if (file_exists($deleteImgThmb)) {
-                    unlink($deleteImgThmb);
-                    $flag_img_thmb = 1;
-                }
-                
-                if($flag_img == 1 && $flag_img_thmb ==1){
                     $result = 1;
                 }
             }
