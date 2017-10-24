@@ -38,7 +38,7 @@ class Owner{
             $cond = "";
         }
 
-        $text = "SELECT COUNT(property.id_produk) AS counter, owner.id_owner, owner.id_listor, owner.alamat_lengkap, 
+        $text = "SELECT COUNT(property.id_produk) AS counter, owner.id_owner, owner.nama_lengkap, owner.id_listor, owner.alamat_lengkap, 
             owner.email, owner.tempat_lahir, owner.tanggal_lahir, owner.kelamin, province.id_provinsi, province.nama_provinsi, 
             city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, kecamatan.nama_kecamatan, kelurahan.id_kelurahan, 
             kelurahan.nama_kelurahan, owner.alamat_lengkap, owner.telp1, owner.telp2, owner.telp3, owner.no_ktp, owner.photo, 

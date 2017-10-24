@@ -38,14 +38,13 @@ if(isset($_GET['action'])){
 				$N_owner = mysql_real_escape_string($_REQUEST['owner']);
 				$N_title = mysql_real_escape_string($_REQUEST['title']);
 				$N_hak = mysql_real_escape_string($_REQUEST['hak']);
-				$N_province = mysql_real_escape_string($_REQUEST['province']);
 				$N_city = mysql_real_escape_string($_REQUEST['city']);
 				$N_kecamatan = mysql_real_escape_string($_REQUEST['kecamatan']);
 				$N_kelurahan = mysql_real_escape_string($_REQUEST['kelurahan']);
 				$N_address = mysql_real_escape_string($_REQUEST['address']);
 				$N_zip = mysql_real_escape_string($_REQUEST['zip']);
 				$N_jual_beli = mysql_real_escape_string($_REQUEST['jual_beli']);
-				$N_type = mysql_real_escape_string($_REQUEST['type']);
+				$N_jenis = mysql_real_escape_string($_REQUEST['jenis']);
 				$N_status_property = mysql_real_escape_string($_REQUEST['status_property']);
 				$N_sertifikat = mysql_real_escape_string($_REQUEST['sertifikat']);
 				$N_promo = mysql_real_escape_string($_REQUEST['promo']);
@@ -66,21 +65,22 @@ if(isset($_GET['action'])){
 				$N_hashtag = mysql_real_escape_string($_REQUEST['hashtag']);
 				$N_price = mysql_real_escape_string($_REQUEST['price']);
 				$N_komisi = mysql_real_escape_string($_REQUEST['komisi']);
-				$N_status = "success";
+				$N_type = mysql_real_escape_string($_REQUEST['type']);
+				$N_status = 0;
 				$N_create_date = mysql_real_escape_string($_REQUEST['create_date']);
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					$check_exist = $obj_property->check_exist($N_token);
+					$check_exist = $obj_property->check_exist($N_token, $N_type);
 					//var_dump($check_exist);
 					if($check_exist == 0){
-						$result = $obj_property->insert_data($N_token, $N_owner, $N_title, $N_hak, $N_province, $N_city, $N_kecamatan, $N_kelurahan, 
-								$N_address, $N_zip, $N_jual_beli, $N_type, $N_status_property, $N_sertifikat, $N_promo, $N_menghadap, $N_lebar_depan, 
-								$N_panjang_tanah, $N_luas_tanah, $N_luas_bangunan, $N_bed, $N_bed_plus, $N_bath, $N_bath_plus, $N_floor, $N_daya_listrik, 
-								$N_sumber_air, $N_fasilitas, $N_description, $N_hashtag, $N_price, $N_komisi, $N_status, $N_create_date);
+						$result = $obj_property->insert_data($N_user_id, $N_owner, $N_title, $N_hak, $N_city, $N_kecamatan, $N_kelurahan, 
+							$N_address, $N_zip, $N_jual_beli, $N_jenis, $N_status_property, $N_sertifikat, $N_promo, $N_menghadap, $N_lebar_depan, 
+							$N_panjang_tanah, $N_luas_tanah, $N_luas_bangunan, $N_bed, $N_bed_plus, $N_bath, $N_bath_plus, $N_floor, $N_daya_listrik, 
+							$N_sumber_air, $N_fasilitas, $N_description, $N_hashtag, $N_price, $N_komisi, $N_type, $N_status, $N_create_date);
 						//var_dump($result);
-						if($result == 1){
+						if($result >= 1){
 							//insert image
-							require_once($global['root-url']."packages/SimpleImage.php"); // class simple image
+							/*require_once($global['root-url']."packages/SimpleImage.php"); // class simple image
 							if(isset($_FILES['image']['name'])){
 								for($i = 0; $i < count($_FILES['image']['name']); $i++){
 									if(!empty($_FILES['image']['name'][$i])){
@@ -116,16 +116,17 @@ if(isset($_GET['action'])){
 										}
 									}
 								}
-							}
+							}*/
 							$R_message = array("status" => "201", "message" => "Insert Data Success");
+							$R_message['data']['id'] = $result;
 						}else{
 							$R_message = array("status" => "400", "message" => "Insert Data Failed");
 						}
 					}else{
-						$result = $obj_property->update_data($N_token, $N_owner, $N_title, $N_hak, $N_province, $N_city, $N_kecamatan, $N_kelurahan, 
-							$N_address, $N_zip, $N_jual_beli, $N_type, $N_status_property, $N_sertifikat, $N_promo, $N_menghadap, $N_lebar_depan, 
+						$result = $obj_property->update_data($N_token, $N_owner, $N_title, $N_hak, $N_city, $N_kecamatan, $N_kelurahan, 
+							$N_address, $N_zip, $N_jual_beli, $N_jenis, $N_status_property, $N_sertifikat, $N_promo, $N_menghadap, $N_lebar_depan, 
 							$N_panjang_tanah, $N_luas_tanah, $N_luas_bangunan, $N_bed, $N_bed_plus, $N_bath, $N_bath_plus, $N_floor, $N_daya_listrik,
-							$N_sumber_air, $N_fasilitas, $N_description, $N_hashtag, $N_price, $N_komisi);
+							$N_sumber_air, $N_fasilitas, $N_description, $N_hashtag, $N_price, $N_komisi, $N_type);
 						//var_dump($result);
 						if($result == 1){
 							$R_message = array("status" => "200", "message" => "Update Data Success");
