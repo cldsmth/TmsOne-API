@@ -130,6 +130,7 @@ if(isset($_GET['action'])){
 						//var_dump($result);
 						if($result == 1){
 							$R_message = array("status" => "200", "message" => "Update Data Success");
+							$R_message['data']['id'] = $N_token;
 						}else{
 							$R_message = array("status" => "400", "message" => "Update Data Failed");
 						}

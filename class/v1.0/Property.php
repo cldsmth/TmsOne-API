@@ -116,15 +116,15 @@ class Property{
             $jenis, $status_property, $sertifikat, $promo, $menghadap, $lebar_depan, $panjang_tanah, $luas_tanah, $luas_bangunan, $bed, 
             $bed_plus, $bath, $bath_plus, $floor, $daya_listrik, $sumber_air, $fasiltas, $description, $hashtag, $price, $komisi, $type){
         $result = 0;
+        $varField = $type == "" ? "" : "request";
+        $varTable = $type == "" ? "" : "_request";
 
-        $text = "UPDATE $this->table SET property_owner = '$owner', property_title = '$title', property_hak = '$hak', property_province = '$province', 
-            property_city = '$city', property_kecamatan = '$kecamatan', property_kelurahan = '$kelurahan', property_address = '$address', property_zip = '$zip', 
-            property_jual_beli = '$jual_beli', property_type = '$jenis', property_status_property = '$status_property', property_sertifikat = '$sertifikat', 
-            property_promo = '$promo', property_menghadap = '$menghadap', property_lebar_depan = '$lebar_depan', property_panjang_tanah = '$panjang_tanah', 
-            property_luas_tanah = '$luas_tanah', property_luas_bangunan = '$luas_bangunan', property_bed = '$bed', property_bed_plus = '$bed_plus', property_bath = '$bath', 
-            property_bath_plus = '$bath_plus', property_floor = '$floor', property_daya_listrik = '$daya_listrik', property_sumber_air = '$sumber_air',
-            property_fasilitas = '$fasiltas', property_description = '$description', property_hashtag = '$hashtag', property_price = '$price', property_komisi = '$komisi' 
-            WHERE property_token = '$token'";
+        $text = "UPDATE $this->table$varTable SET id_owner = '$owner', judul_produk = '$title', id_kabupaten = '$city', id_kecamatan = '$kecamatan', 
+            id_kelurahan = '$kelurahan', alamat_detail = '$address', kode_pos = '$zip', id_jenis = '$jenis', status_properti = '$status_property', 
+            jenis_sertifikat = '$sertifikat', promo = '$promo', hadap_rumah = '$menghadap', lebar_muka = '$lebar_depan', panjang_dalam = '$panjang_tanah', 
+            luas_tanah = '$luas_tanah', luas_bangunan = '$luas_bangunan', jumlah_kamar = '$bed', jumlah_kamarplus = '$bed_plus', jumlah_kamarmandi = '$bath', 
+            jumlah_lantai = '$floor', fasilitas = '$fasiltas', detail_produk = '$description', hashtag = '$hashtag', harga = '$price', komisi = '$komisi' 
+            WHERE id_produk$varField = '$token'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
