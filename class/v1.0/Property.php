@@ -133,12 +133,14 @@ class Property{
         return $result;
     }
 
-    public function delete_data($token, $path){
+    public function delete_data($token, $type, $path){
         $result = 0;
-        $this->remove_image($token, $path); //remove image before
-        $this->delete_data_image($token); //delete data image
+        $varField = $type == "" ? "" : "request";
+        $varTable = $type == "" ? "" : "_request";
+        //$this->remove_image($token, $path); //remove image before
+        //$this->delete_data_image($token); //delete data image
 
-        $text = "DELETE FROM $this->table WHERE property_token = '$token'";
+        $text = "DELETE FROM $this->table$varTable WHERE id_produk$varField = '$token'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;

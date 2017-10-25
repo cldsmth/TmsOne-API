@@ -65,7 +65,7 @@ if(isset($_GET['action'])){
 				$N_hashtag = mysql_real_escape_string($_REQUEST['hashtag']);
 				$N_price = mysql_real_escape_string($_REQUEST['price']);
 				$N_komisi = mysql_real_escape_string($_REQUEST['komisi']);
-				$N_type = mysql_real_escape_string($_REQUEST['type']);
+				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
 				$N_status = 0;
 				$N_create_date = mysql_real_escape_string($_REQUEST['create_date']);
 
@@ -178,9 +178,10 @@ if(isset($_GET['action'])){
 				$N_user_id = mysql_real_escape_string($_REQUEST['user_id']);
 				$N_auth_token = mysql_real_escape_string($_REQUEST['auth_token']);
 				$N_token = mysql_real_escape_string($_REQUEST['token']);
+				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
 
 				if($obj_user->check_code($N_auth_token, $N_user_id)){//check code
-					$result = $obj_property->delete_data($N_token, $global['root-url']);
+					$result = $obj_property->delete_data($N_token, $N_type, $global['root-url-image']);
 					//var_dump($result);
 					if($result >= 1){
 						$R_message = array("status" => "200", "message" => "Delete success");
