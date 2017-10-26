@@ -148,12 +148,13 @@ class Property{
         return $result;
     }
 
-    public function delete_data_by_owner($owner, $path){
+    public function delete_data_by_owner($owner, $type, $path){
         $result = 0;
-        $this->remove_image_by_owner($owner, $path); //remove image before
-        $this->delete_data_image_by_owner($owner); //delete data image
-
-        $text = "DELETE FROM $this->table WHERE property_owner = '$owner'";
+        $varTable = $type == "" ? "" : "_request";
+        $this->remove_image_by_owner($owner, $type, $path); //remove image before
+        $this->delete_data_image_by_owner($owner, $type); //delete data image
+       
+        $text = "DELETE FROM $this->table$varTable WHERE id_owner = '$owner'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
@@ -174,11 +175,14 @@ class Property{
         return $result;
     }
 
-    public function delete_data_image_by_owner($owner){
+    public function delete_data_image_by_owner($owner, $type){
         $result = 0;
+        $varField = $type == "" ? "" : "request";
+        $varTable = $type == "" ? "" : "_request";
         
-        $text = "DELETE FROM t_property_image WHERE pi_property IN
-            (SELECT property_token FROM $this->table WHERE property_owner = '$owner')";
+        $text = "DELETE FROM photo_produk$varTable WHERE id_produk$varField IN
+            (SELECT property.id_produk$varField FROM $this->table$varTable property 
+                WHERE property.id_owner = '$owner')";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
@@ -206,29 +210,23 @@ class Property{
         return $result;
     }
 
-    public function remove_image_by_owner($owner, $path){
+    public function remove_image_by_owner($owner, $type, $path){
         $result = 0;
-        $flag_img = 0;
-        $flag_img_thmb = 0;
+        $varField = $type == "" ? "" : "request";
+        $varTable = $type == "" ? "" : "_request";
 
-        $text = "SELECT pi_img, pi_img_thmb FROM t_property_image LEFT JOIN t_property 
-            ON property_token = pi_property WHERE property_owner = '$owner'";
+        $text = "SELECT photo.id_photo, photo.file_photo FROM photo_produk$varTable photo 
+            LEFT JOIN $this->table$varTable property ON property.id_produk$varField = photo.id_produk$varField 
+            WHERE property.id_owner = '$owner'";
         $query = mysql_query($text);
         while($row = mysql_fetch_array($query, MYSQL_ASSOC)){
-            $deleteImg = $path.$row['pi_img'];
-            if(file_exists($deleteImg)){
-                unlink($deleteImg);
-                $flag_img = 1;
-            }
-
-            $deleteImgThmb = $path.$row['pi_img_thmb'];
-            if(file_exists($deleteImgThmb)){
-                unlink($deleteImgThmb);
-                $flag_img_thmb = 1;
-            }
-
-            if($flag_img == 1 && $flag_img_thmb ==1){
-                $result = 1;
+            $value = $row['file_photo'];
+            if($value != ""){
+                $deleteImg = $path."produk_photo/".$value;
+                if (file_exists($deleteImg)) {
+                    unlink($deleteImg);
+                    $result = 1;
+                }
             }
         }
         return $result;

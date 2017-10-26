@@ -170,7 +170,8 @@ if(isset($_GET['action'])){
 					$result = $obj_owner->delete_data($N_token, $global['root-url-image']);
 					//var_dump($result);
 					if($result >= 1){
-						//$obj_property->delete_data_by_owner($N_token, $global['root-url-image']);
+						$obj_property->delete_data_by_owner($N_token, "", $global['root-url-image']);
+						$obj_property->delete_data_by_owner($N_token, "request", $global['root-url-image']);
 						$R_message = array("status" => "200", "message" => "Delete success");
 					}
 				}//check code
