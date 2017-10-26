@@ -80,45 +80,41 @@ if(isset($_GET['action'])){
 						//var_dump($result);
 						if($result >= 1){
 							//insert image
-							/*require_once($global['root-url']."packages/SimpleImage.php"); // class simple image
+							$array_image = array();
+							$index = 0;
 							if(isset($_FILES['image']['name'])){
 								for($i = 0; $i < count($_FILES['image']['name']); $i++){
 									if(!empty($_FILES['image']['name'][$i])){
 										$N_image_token = mysql_real_escape_string($_REQUEST['image_token'][$i]);
 										$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
-										$file_name = cleanSpace($_FILES['image']['name'][$i]);
-										$file_ext = strtolower(end(explode('.', $file_name)));
+										$file_name = $_FILES['image']['name'][$i];
+										$file_ext_tmp = explode('.', $file_name);
+										$file_ext = strtolower(end($file_ext_tmp));
 										$file_size = $_FILES['image']['size'][$i];
 										$file_tmp = $_FILES['image']['tmp_name'][$i];
-										$ran = rand();
-							    		$timestamp = time();
-										
+
 										if(in_array($file_ext, $allowed_ext) === true){
 											if($file_size < 10044070){
-												//save image in server
-												$file_loc = $global['root-url']."uploads/property/".$timestamp.$ran.$file_name; 
-												$file_locThmb = $global['root-url']."uploads/property-thmb/".$timestamp.$ran.$file_name;
-
-												//save image in database
-												$file_loc1 = "uploads/property/".$timestamp.$ran.$file_name; 
-												$file_locThmb1 = "uploads/property-thmb/".$timestamp.$ran.$file_name;
-
-												if(move_uploaded_file($file_tmp, $file_loc))
-												{
-													$image = new SimpleImage();
-													$image->load($file_loc);
-													$image->resize(200,200);
-													$image->save($file_locThmb);
-												}
+												$image_name = "product_".md5($file_name).".".$file_ext;
+												$image_loc = $global['root-url-image']."produk_photo/".$image_name; 
+												move_uploaded_file($file_tmp, $image_loc);
 												
-												$obj_image->insert_data($N_image_token, $N_token, $file_loc1, $file_locThmb1, $N_status);
+												$result_image = $obj_image->insert_data($result, $N_type, $image_name, $N_create_date);
+												if($result >= 1){
+													$array_image[$index]['id'] = $result_image;
+													$array_image[$index]['token'] = $N_image_token;
+													$index++;
+												}
 											}
 										}
 									}
 								}
-							}*/
+							}
 							$R_message = array("status" => "201", "message" => "Insert Data Success");
 							$R_message['data']['id'] = $result;
+							if(count($array_image) >= 1){
+								$R_message['data']['image'] = $array_image;
+							}
 						}else{
 							$R_message = array("status" => "400", "message" => "Insert Data Failed");
 						}
