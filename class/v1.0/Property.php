@@ -40,7 +40,7 @@ class Property{
             kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, property.alamat_detail, property.kode_pos, 
             property.status_jual, jenis.id_jenis, jenis.nama_jenis, property.status_properti, property.jenis_sertifikat, property.promo, 
             property.hadap_rumah, property.lebar_muka, property.panjang_dalam, property.luas_tanah, property.luas_bangunan, property.jumlah_kamar, 
-            property.jumlah_kamarplus, property.jumlah_kamarmandi, '' AS jumlah_kamarmandiplus, property.jumlah_lantai, 
+            property.jumlah_kamarplus, property.jumlah_kamarmandi, property.jumlah_kamarmandiplus, property.jumlah_lantai, 
             '' AS daya_listrik, '' AS sumber_air, property.fasilitas, property.detail_produk, property.hashtag, property.harga, 
             property.komisi, '' AS type, property.status, property.add_date FROM $this->table property 
             LEFT JOIN jenis_produk jenis ON jenis.id_jenis = property.id_jenis
@@ -54,7 +54,7 @@ class Property{
             kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, request.alamat_detail, request.kode_pos, 
             request.status_jual, jenis.id_jenis, jenis.nama_jenis, request.status_properti, request.jenis_sertifikat, request.promo, 
             request.hadap_rumah, request.lebar_muka, request.panjang_dalam, request.luas_tanah, request.luas_bangunan, request.jumlah_kamar, 
-            request.jumlah_kamarplus, request.jumlah_kamarmandi, '' AS jumlah_kamarmandiplus, request.jumlah_lantai, 
+            request.jumlah_kamarplus, request.jumlah_kamarmandi, request.jumlah_kamarmandiplus, request.jumlah_lantai, 
             '' AS daya_listrik, '' AS sumber_air, request.fasilitas, request.detail_produk, request.hashtag, request.harga, 
             request.komisi, 'request' AS type, 0 AS status, request.add_date FROM $this->tableRequest request 
             LEFT JOIN jenis_produk jenis ON jenis.id_jenis = request.id_jenis
@@ -100,9 +100,9 @@ class Property{
 
 		$text = "INSERT INTO $this->table$varTable (id_listor, id_owner, judul_produk, id_kabupaten, id_kecamatan, id_kelurahan, alamat_detail, kode_pos, status_jual, id_jenis, 
             status_properti, jenis_sertifikat, promo, hadap_rumah, lebar_muka, panjang_dalam, luas_tanah, luas_bangunan, jumlah_kamar, jumlah_kamarplus, 
-            jumlah_kamarmandi, jumlah_lantai, fasilitas, detail_produk, hashtag, harga, komisi, $fieldStatus add_date) VALUES ('$user_id', '$owner', '$title', 
+            jumlah_kamarmandi, jumlah_kamarmandiplus, jumlah_lantai, fasilitas, detail_produk, hashtag, harga, komisi, $fieldStatus add_date) VALUES ('$user_id', '$owner', '$title', 
             '$city', '$kecamatan', '$kelurahan', '$address', '$zip', '$jual_beli', '$jenis', '$status_property', '$sertifikat', '$promo', '$menghadap', '$lebar_depan', 
-            '$panjang_tanah', '$luas_tanah', '$luas_bangunan', '$bed', '$bed_plus', '$bath', '$floor', '$fasiltas', '$description', '$hashtag', '$price', 
+            '$panjang_tanah', '$luas_tanah', '$luas_bangunan', '$bed', '$bed_plus', '$bath', '$bath_plus', '$floor', '$fasiltas', '$description', '$hashtag', '$price', 
             '$komisi', $valStatus '$create_date')";
 		$query = mysql_query($text);
 		if($query){
@@ -123,8 +123,8 @@ class Property{
             id_kelurahan = '$kelurahan', alamat_detail = '$address', kode_pos = '$zip', status_jual = '$jual_beli', id_jenis = '$jenis', status_properti = '$status_property', 
             jenis_sertifikat = '$sertifikat', promo = '$promo', hadap_rumah = '$menghadap', lebar_muka = '$lebar_depan', panjang_dalam = '$panjang_tanah', 
             luas_tanah = '$luas_tanah', luas_bangunan = '$luas_bangunan', jumlah_kamar = '$bed', jumlah_kamarplus = '$bed_plus', jumlah_kamarmandi = '$bath', 
-            jumlah_lantai = '$floor', fasilitas = '$fasiltas', detail_produk = '$description', hashtag = '$hashtag', harga = '$price', komisi = '$komisi' 
-            WHERE id_produk$varField = '$token'";
+            jumlah_kamarmandiplus = '$bath_plus', jumlah_lantai = '$floor', fasilitas = '$fasiltas', detail_produk = '$description', hashtag = '$hashtag', 
+            harga = '$price', komisi = '$komisi' WHERE id_produk$varField = '$token'";
         $query = mysql_query($text);
         if(mysql_affected_rows() == 1){
             $result = 1;
