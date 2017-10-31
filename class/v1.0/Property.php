@@ -35,7 +35,7 @@ class Property{
             $cond = "";
         }
 
-        $textProperty = "SELECT property.id_produk AS id, property.id_owner, property.id_listor, property.judul_produk, '' AS hak, 
+        $textProperty = "SELECT property.id_produk AS id, property.id_owner, property.id_listor, property.judul_produk, property.hak_jual, 
             province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
             kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, property.alamat_detail, property.kode_pos, 
             property.status_jual, jenis.id_jenis, jenis.nama_jenis, property.status_properti, property.jenis_sertifikat, property.promo, 
@@ -49,7 +49,7 @@ class Property{
             LEFT JOIN kelurahan kelurahan ON kelurahan.id_kelurahan = property.id_kelurahan
             LEFT JOIN provinsi province ON province.id_provinsi = city.id_provinsi
             WHERE property.id_listor = '$user_id'";
-        $textRequest = "SELECT request.id_produkrequest AS id, request.id_owner, request.id_listor, request.judul_produk, '' AS hak, 
+        $textRequest = "SELECT request.id_produkrequest AS id, request.id_owner, request.id_listor, request.judul_produk, request.hak_jual, 
             province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
             kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, request.alamat_detail, request.kode_pos, 
             request.status_jual, jenis.id_jenis, jenis.nama_jenis, request.status_properti, request.jenis_sertifikat, request.promo, 
@@ -98,12 +98,12 @@ class Property{
         $valStatus = $type == "" ? "'$status'," : "";
         $varTable = $type == "" ? "" : "_request";
 
-		$text = "INSERT INTO $this->table$varTable (id_listor, id_owner, judul_produk, id_kabupaten, id_kecamatan, id_kelurahan, alamat_detail, kode_pos, status_jual, id_jenis, 
-            status_properti, jenis_sertifikat, promo, hadap_rumah, lebar_muka, panjang_dalam, luas_tanah, luas_bangunan, jumlah_kamar, jumlah_kamarplus, 
-            jumlah_kamarmandi, jumlah_kamarmandiplus, jumlah_lantai, daya_listrik, sumber_air, fasilitas, detail_produk, hashtag, harga, komisi, $fieldStatus add_date) VALUES ('$user_id', '$owner', '$title', 
-            '$city', '$kecamatan', '$kelurahan', '$address', '$zip', '$jual_beli', '$jenis', '$status_property', '$sertifikat', '$promo', '$menghadap', '$lebar_depan', 
-            '$panjang_tanah', '$luas_tanah', '$luas_bangunan', '$bed', '$bed_plus', '$bath', '$bath_plus', '$floor', '$daya_listrik', '$sumber_air', '$fasiltas', '$description', '$hashtag', '$price', 
-            '$komisi', $valStatus '$create_date')";
+		$text = "INSERT INTO $this->table$varTable (id_listor, id_owner, judul_produk, hak_jual, id_kabupaten, id_kecamatan, id_kelurahan, alamat_detail, 
+            kode_pos, status_jual, id_jenis, status_properti, jenis_sertifikat, promo, hadap_rumah, lebar_muka, panjang_dalam, luas_tanah, luas_bangunan, jumlah_kamar, 
+            jumlah_kamarplus, jumlah_kamarmandi, jumlah_kamarmandiplus, jumlah_lantai, daya_listrik, sumber_air, fasilitas, detail_produk, hashtag, harga, komisi, $fieldStatus add_date) 
+            VALUES ('$user_id', '$owner', '$title', '$hak', '$city', '$kecamatan', '$kelurahan', '$address', '$zip', '$jual_beli', '$jenis', '$status_property', '$sertifikat', '$promo', 
+            '$menghadap', '$lebar_depan', '$panjang_tanah', '$luas_tanah', '$luas_bangunan', '$bed', '$bed_plus', '$bath', '$bath_plus', '$floor', '$daya_listrik', '$sumber_air', '$fasiltas', 
+            '$description', '$hashtag', '$price', '$komisi', $valStatus '$create_date')";
 		$query = mysql_query($text);
 		if($query){
 			$result = mysql_insert_id();
@@ -119,7 +119,7 @@ class Property{
         $varField = $type == "" ? "" : "request";
         $varTable = $type == "" ? "" : "_request";
 
-        $text = "UPDATE $this->table$varTable SET id_owner = '$owner', judul_produk = '$title', id_kabupaten = '$city', id_kecamatan = '$kecamatan', 
+        $text = "UPDATE $this->table$varTable SET id_owner = '$owner', judul_produk = '$title', hak_jual = '$hak_jual', id_kabupaten = '$city', id_kecamatan = '$kecamatan', 
             id_kelurahan = '$kelurahan', alamat_detail = '$address', kode_pos = '$zip', status_jual = '$jual_beli', id_jenis = '$jenis', status_properti = '$status_property', 
             jenis_sertifikat = '$sertifikat', promo = '$promo', hadap_rumah = '$menghadap', lebar_muka = '$lebar_depan', panjang_dalam = '$panjang_tanah', 
             luas_tanah = '$luas_tanah', luas_bangunan = '$luas_bangunan', jumlah_kamar = '$bed', jumlah_kamarplus = '$bed_plus', jumlah_kamarmandi = '$bath', 
