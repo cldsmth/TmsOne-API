@@ -302,4 +302,8 @@ RewriteRule ^api/(.*)/property-image/sync/$ api/$1/api_property_image.php?action
 #code to redirect to api/api_property_image.php?action=delete_data
 RewriteRule ^api/(.*)/property-image/delete/$ api/$1/api_property_image.php?action=delete_data
 
+#REFERENCE API
+#code to redirect to api/api_reference.php?action=get_reference
+RewriteRule ^api/(.*)/reference/list/$ api/$1/api_reference.php?action=get_reference
+
 
