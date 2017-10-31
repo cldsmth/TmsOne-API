@@ -38,7 +38,7 @@ class Property{
         $textProperty = "SELECT property.id_produk AS id, property.id_owner, property.id_listor, property.judul_produk, '' AS hak, 
             province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
             kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, property.alamat_detail, property.kode_pos, 
-            '' AS jual_beli, jenis.id_jenis, jenis.nama_jenis, property.status_properti, property.jenis_sertifikat, property.promo, 
+            property.status_jual, jenis.id_jenis, jenis.nama_jenis, property.status_properti, property.jenis_sertifikat, property.promo, 
             property.hadap_rumah, property.lebar_muka, property.panjang_dalam, property.luas_tanah, property.luas_bangunan, property.jumlah_kamar, 
             property.jumlah_kamarplus, property.jumlah_kamarmandi, '' AS jumlah_kamarmandiplus, property.jumlah_lantai, 
             '' AS daya_listrik, '' AS sumber_air, property.fasilitas, property.detail_produk, property.hashtag, property.harga, 
@@ -52,7 +52,7 @@ class Property{
         $textRequest = "SELECT request.id_produkrequest AS id, request.id_owner, request.id_listor, request.judul_produk, '' AS hak, 
             province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
             kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, request.alamat_detail, request.kode_pos, 
-            '' AS jual_beli, jenis.id_jenis, jenis.nama_jenis, request.status_properti, request.jenis_sertifikat, request.promo, 
+            request.status_jual, jenis.id_jenis, jenis.nama_jenis, request.status_properti, request.jenis_sertifikat, request.promo, 
             request.hadap_rumah, request.lebar_muka, request.panjang_dalam, request.luas_tanah, request.luas_bangunan, request.jumlah_kamar, 
             request.jumlah_kamarplus, request.jumlah_kamarmandi, '' AS jumlah_kamarmandiplus, request.jumlah_lantai, 
             '' AS daya_listrik, '' AS sumber_air, request.fasilitas, request.detail_produk, request.hashtag, request.harga, 
@@ -98,10 +98,10 @@ class Property{
         $valStatus = $type == "" ? "'$status'," : "";
         $varTable = $type == "" ? "" : "_request";
 
-		$text = "INSERT INTO $this->table$varTable (id_listor, id_owner, judul_produk, id_kabupaten, id_kecamatan, id_kelurahan, alamat_detail, kode_pos, id_jenis, 
+		$text = "INSERT INTO $this->table$varTable (id_listor, id_owner, judul_produk, id_kabupaten, id_kecamatan, id_kelurahan, alamat_detail, kode_pos, status_jual, id_jenis, 
             status_properti, jenis_sertifikat, promo, hadap_rumah, lebar_muka, panjang_dalam, luas_tanah, luas_bangunan, jumlah_kamar, jumlah_kamarplus, 
             jumlah_kamarmandi, jumlah_lantai, fasilitas, detail_produk, hashtag, harga, komisi, $fieldStatus add_date) VALUES ('$user_id', '$owner', '$title', 
-            '$city', '$kecamatan', '$kelurahan', '$address', '$zip', '$jenis', '$status_property', '$sertifikat', '$promo', '$menghadap', '$lebar_depan', 
+            '$city', '$kecamatan', '$kelurahan', '$address', '$zip', '$jual_beli', '$jenis', '$status_property', '$sertifikat', '$promo', '$menghadap', '$lebar_depan', 
             '$panjang_tanah', '$luas_tanah', '$luas_bangunan', '$bed', '$bed_plus', '$bath', '$floor', '$fasiltas', '$description', '$hashtag', '$price', 
             '$komisi', $valStatus '$create_date')";
 		$query = mysql_query($text);
@@ -120,7 +120,7 @@ class Property{
         $varTable = $type == "" ? "" : "_request";
 
         $text = "UPDATE $this->table$varTable SET id_owner = '$owner', judul_produk = '$title', id_kabupaten = '$city', id_kecamatan = '$kecamatan', 
-            id_kelurahan = '$kelurahan', alamat_detail = '$address', kode_pos = '$zip', id_jenis = '$jenis', status_properti = '$status_property', 
+            id_kelurahan = '$kelurahan', alamat_detail = '$address', kode_pos = '$zip', status_jual = '$jual_beli', id_jenis = '$jenis', status_properti = '$status_property', 
             jenis_sertifikat = '$sertifikat', promo = '$promo', hadap_rumah = '$menghadap', lebar_muka = '$lebar_depan', panjang_dalam = '$panjang_tanah', 
             luas_tanah = '$luas_tanah', luas_bangunan = '$luas_bangunan', jumlah_kamar = '$bed', jumlah_kamarplus = '$bed_plus', jumlah_kamarmandi = '$bath', 
             jumlah_lantai = '$floor', fasilitas = '$fasiltas', detail_produk = '$description', hashtag = '$hashtag', harga = '$price', komisi = '$komisi' 
