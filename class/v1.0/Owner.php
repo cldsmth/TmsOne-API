@@ -3,7 +3,6 @@ class Owner{
 
 	private $table = "owner";
     private $itemPerPage = 6;
-    private $joinProperty = "LEFT JOIN produk property ON property.id_owner = owner.id_owner";
     private $joinCity = "LEFT JOIN kabupaten city ON city.id_kabupaten = owner.id_kabupaten";
     private $joinKecamatan = "LEFT JOIN kecamatan kecamatan ON kecamatan.id_kecamatan = owner.id_kecamatan";
     private $joinKelurahan = "LEFT JOIN kelurahan kelurahan ON kelurahan.id_kelurahan = owner.id_kelurahan";
@@ -38,11 +37,13 @@ class Owner{
             $cond = "";
         }
 
-        $text = "SELECT COUNT(property.id_produk) AS counter, owner.id_owner, owner.nama_lengkap, owner.id_listor, owner.alamat_lengkap, 
-            owner.email, owner.tempat_lahir, owner.tanggal_lahir, owner.kelamin, province.id_provinsi, province.nama_provinsi, 
-            city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, kecamatan.nama_kecamatan, kelurahan.id_kelurahan, 
-            kelurahan.nama_kelurahan, owner.alamat_lengkap, owner.telp1, owner.telp2, owner.telp3, owner.no_ktp, owner.photo, 
-            owner.status, owner.add_date FROM $this->table $this->joinProperty $this->joinCity $this->joinKecamatan $this->joinKelurahan
+        $text = "SELECT 
+            ((SELECT COUNT(property.id_produk) FROM produk property WHERE property.id_owner = owner.id_owner) 
+                + (SELECT COUNT(request.id_produkrequest) FROM produk_request request WHERE request.id_owner = owner.id_owner)) AS counter, 
+            owner.id_owner, owner.nama_lengkap, owner.id_listor, owner.alamat_lengkap, owner.email, owner.tempat_lahir, owner.tanggal_lahir, 
+            owner.kelamin, province.id_provinsi, province.nama_provinsi, city.id_kabupaten, city.nama_kabupaten, kecamatan.id_kecamatan, 
+            kecamatan.nama_kecamatan, kelurahan.id_kelurahan, kelurahan.nama_kelurahan, owner.alamat_lengkap, owner.telp1, owner.telp2, 
+            owner.telp3, owner.no_ktp, owner.photo, owner.status, owner.add_date FROM $this->table $this->joinCity $this->joinKecamatan $this->joinKelurahan
             $this->joinProvince WHERE owner.status = 1 AND owner.id_listor = '$user_id' $cond GROUP BY owner.id_owner ORDER BY owner.add_date ASC";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
