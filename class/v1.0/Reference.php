@@ -11,7 +11,7 @@ class Reference{
         if(mysql_num_rows($query) >= 1){
             $result = array();
             while($row = mysql_fetch_assoc($query)){
-                $result[$row['caption']][] = $row;
+                $result[str_replace(" ", "_", $row['caption'])][] = $row;
             }
         }
         //$result = $text;
