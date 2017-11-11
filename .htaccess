@@ -303,8 +303,8 @@ RewriteRule ^api/(.*)/property-image/sync/$ api/$1/api_property_image.php?action
 RewriteRule ^api/(.*)/property-image/delete/$ api/$1/api_property_image.php?action=delete_data
 
 #REFERENCE API
-#code to redirect to api/api_reference.php?action=get_reference
-RewriteRule ^api/(.*)/reference/list/$ api/$1/api_reference.php?action=get_reference
+#code to redirect to api/api_reference.php?action=get_list
+RewriteRule ^api/(.*)/reference/list/$ api/$1/api_reference.php?action=get_list
 
 #JENIS API
 #code to redirect to api/api_jenis.php?action=get_jenis

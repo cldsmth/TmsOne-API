@@ -15,13 +15,11 @@ if(isset($_GET['action'])){
 
 	//===================================== get reference ========================================
 	//start get reference
-	if($_GET['action'] == 'get_reference' && isset($_REQUEST['caption'])){
+	if($_GET['action'] == 'get_list'){
 		$obj_connect->up();	
 		$R_message = array("status" => "400", "message" => "No Data");
 
-		$N_caption = mysql_real_escape_string($_REQUEST['caption']);
-
-		$result = $obj_reference->get_list_by_caption($N_caption);
+		$result = $obj_reference->get_list();
 		if(is_array($result)){
 			$R_message = array("status" => "200", "message" => "Data Exist", "data" => $result);
 		}
