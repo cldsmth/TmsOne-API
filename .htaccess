@@ -306,4 +306,8 @@ RewriteRule ^api/(.*)/property-image/delete/$ api/$1/api_property_image.php?acti
 #code to redirect to api/api_reference.php?action=get_reference
 RewriteRule ^api/(.*)/reference/list/$ api/$1/api_reference.php?action=get_reference
 
+#JENIS API
+#code to redirect to api/api_jenis.php?action=get_jenis
+RewriteRule ^api/(.*)/jenis/list/$ api/$1/api_jenis.php?action=get_list
+
 
