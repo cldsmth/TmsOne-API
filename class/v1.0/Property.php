@@ -119,7 +119,7 @@ class Property{
         $varField = $type == "" ? "" : "request";
         $varTable = $type == "" ? "" : "_request";
 
-        $text = "UPDATE $this->table$varTable SET id_owner = '$owner', judul_produk = '$title', hak_jual = '$hak_jual', id_kabupaten = '$city', id_kecamatan = '$kecamatan', 
+        $text = "UPDATE $this->table$varTable SET id_owner = '$owner', judul_produk = '$title', hak_jual = '$hak', id_kabupaten = '$city', id_kecamatan = '$kecamatan', 
             id_kelurahan = '$kelurahan', alamat_detail = '$address', kode_pos = '$zip', status_jual = '$jual_beli', id_jenis = '$jenis', status_properti = '$status_property', 
             jenis_sertifikat = '$sertifikat', promo = '$promo', hadap_rumah = '$menghadap', lebar_muka = '$lebar_depan', panjang_dalam = '$panjang_tanah', 
             luas_tanah = '$luas_tanah', luas_bangunan = '$luas_bangunan', jumlah_kamar = '$bed', jumlah_kamarplus = '$bed_plus', jumlah_kamarmandi = '$bath', 
