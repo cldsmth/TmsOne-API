@@ -86,6 +86,7 @@ if(isset($_GET['action'])){
 								for($i = 0; $i < count($_FILES['image']['name']); $i++){
 									if(!empty($_FILES['image']['name'][$i])){
 										$N_image_token = mysql_real_escape_string($_REQUEST['image_token'][$i]);
+										$N_image_primary = mysql_real_escape_string($_REQUEST['image_primary'][$i]);
 										$allowed_ext = array('jpg', 'jpeg', 'png', 'gif');
 										$file_name = $_FILES['image']['name'][$i];
 										$file_ext_tmp = explode('.', $file_name);
@@ -99,7 +100,7 @@ if(isset($_GET['action'])){
 												$image_loc = $global['root-url-image']."produk_photo/".$image_name; 
 												move_uploaded_file($file_tmp, $image_loc);
 												
-												$result_image = $obj_image->insert_data($result, $N_type, $image_name, $N_create_date);
+												$result_image = $obj_image->insert_data($result, $N_type, $image_name, $N_image_primary, $N_create_date);
 												if($result >= 1){
 													$array_image[$index]['id'] = $result_image;
 													$array_image[$index]['token'] = $N_image_token;

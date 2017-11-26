@@ -75,8 +75,8 @@ class Property{
                 $varField = $row['type'] == "" ? "" : "request";
                 $varTable = $row['type'] == "" ? "" : "_request";
 
-                $text_detail = "SELECT id_photo, id_produk$varField AS id_property, file_photo
-                	FROM photo_produk$varTable WHERE id_produk$varField = '{$row['id']}'";
+                $text_detail = "SELECT id_photo, id_produk$varField AS id_property, file_photo,
+                    is_primary, add_date FROM photo_produk$varTable WHERE id_produk$varField = '{$row['id']}'";
                 $query_detail = mysql_query($text_detail);
                 if(mysql_num_rows($query_detail) >= 1){
                     while($row_detail = mysql_fetch_array($query_detail, MYSQL_ASSOC)){

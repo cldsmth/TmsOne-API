@@ -33,6 +33,7 @@ if(isset($_GET['action'])){
 
 				//field
 				$N_property = mysql_real_escape_string($_REQUEST['property']);
+				$N_primary = mysql_real_escape_string($_REQUEST['primary']);
 				$N_type = isset($_REQUEST['type']) ? $_REQUEST['type'] : "";
 				$N_create_date = mysql_real_escape_string($_REQUEST['create_date']);
 
@@ -52,7 +53,7 @@ if(isset($_GET['action'])){
 									$image_loc = $global['root-url-image']."produk_photo/".$image_name; 
 									move_uploaded_file($file_tmp, $image_loc);
 
-									$result = $obj_image->insert_data($N_property, $N_type, $image_name, $N_create_date);
+									$result = $obj_image->insert_data($N_property, $N_type, $image_name, $N_primary, $N_create_date);
 									//var_dump($result);
 									if($result >= 1){
 										$R_message = array("status" => "200", "message" => "Insert Data Success");

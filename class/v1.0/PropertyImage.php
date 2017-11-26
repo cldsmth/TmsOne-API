@@ -22,7 +22,7 @@ class PropertyImage{
             $cond = "";
         }
 
-        $text = "SELECT id_photo, id_produk$varField AS id_property, file_photo 
+        $text = "SELECT id_photo, id_produk$varField AS id_property, file_photo, is_primary, add_date 
             FROM $this->table$varTable WHERE id_produk$varField = '$property' $cond";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
@@ -35,13 +35,13 @@ class PropertyImage{
         return $result;
     }
 
-	public function insert_data($property, $type, $img, $create_date){
+	public function insert_data($property, $type, $img, $primary, $create_date){
 		$result = 0;
         $varField = $type == "" ? "" : "request";
         $varTable = $type == "" ? "" : "_request";
 
-		$text = "INSERT INTO $this->table$varTable (id_produk$varField, file_photo, add_date) 
-            VALUES ('$property', '$img', '$create_date')";
+		$text = "INSERT INTO $this->table$varTable (id_produk$varField, file_photo, is_primary, add_date) 
+            VALUES ('$property', '$img', '$primary', '$create_date')";
 		$query = mysql_query($text);
 		if($query){
 			$result = mysql_insert_id();
