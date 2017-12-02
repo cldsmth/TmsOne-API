@@ -24,7 +24,7 @@ class Province{
     public function get_last_updated(){
         $result = 0;
 
-        $text = "SELECT MAX(timestamp) AS last_updated FROM provinsi WHERE status = 1";
+        $text = "SELECT MAX(timestamp) AS last_updated FROM $this->table WHERE status = 1";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $row = mysql_fetch_assoc($query);

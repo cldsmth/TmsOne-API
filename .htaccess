@@ -287,6 +287,9 @@ RewriteRule ^api/(.*)/province/sync/$ api/$1/api_province.php?action=sync
 #code to redirect to api/api_city.php?action=get_city
 RewriteRule ^api/(.*)/city/province/([0-9]+)/$ api/$1/api_city.php?action=get_city&province=$2
 
+#code to redirect to api/api_city.php?action=sync
+RewriteRule ^api/(.*)/city/sync/$ api/$1/api_city.php?action=sync
+
 #KECAMATAN API
 #code to redirect to api/api_kecamatan.php?action=get_kecamatan
 RewriteRule ^api/(.*)/kecamatan/city/([0-9]+)/$ api/$1/api_kecamatan.php?action=get_kecamatan&city=$2
