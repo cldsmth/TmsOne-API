@@ -325,4 +325,7 @@ RewriteRule ^api/(.*)/reference/sync/$ api/$1/api_reference.php?action=sync
 #code to redirect to api/api_jenis.php?action=get_jenis
 RewriteRule ^api/(.*)/jenis/list/$ api/$1/api_jenis.php?action=get_list
 
+#code to redirect to api/api_jenis.php?action=sync
+RewriteRule ^api/(.*)/jenis/sync/$ api/$1/api_jenis.php?action=sync
+
 
