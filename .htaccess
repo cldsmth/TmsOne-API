@@ -280,6 +280,9 @@ RewriteRule ^api/(.*)/feedback/send/$ api/$1/api_feedback.php?action=send
 #code to redirect to api/api_province.php?action=get_province
 RewriteRule ^api/(.*)/province/list/$ api/$1/api_province.php?action=get_province
 
+#code to redirect to api/api_province.php?action=sync
+RewriteRule ^api/(.*)/province/sync/$ api/$1/api_province.php?action=sync
+
 #CITY API
 #code to redirect to api/api_city.php?action=get_city
 RewriteRule ^api/(.*)/city/province/([0-9]+)/$ api/$1/api_city.php?action=get_city&province=$2
