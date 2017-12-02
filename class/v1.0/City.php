@@ -8,8 +8,8 @@ class City{
         $cond = $last_updated != "" ? "AND (UNIX_TIMESTAMP(timestamp) * 1000) > 
             (UNIX_TIMESTAMP('$last_updated') * 1000)" : "";
        
-        $text = "SELECT id_kabupaten, id_provinsi, kode_kabupaten, nama_kabupaten, keterangan, 
-            status, timestamp FROM $this->table WHERE status = 1 $cond ORDER BY nama_kabupaten ASC";
+        $text = "SELECT id_kabupaten, id_provinsi, kode_kabupaten, nama_kabupaten, 
+            keterangan, status, timestamp FROM $this->table WHERE status = 1 $cond";
         $query = mysql_query($text);
         if(mysql_num_rows($query) >= 1){
             $result = array();
