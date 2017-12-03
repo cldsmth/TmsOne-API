@@ -36,15 +36,19 @@ if(isset($_GET['action'])){
 		$obj_connect->up();	
 		$R_message = array("status" => "400", "message" => "No Data");
 
+		$N_page = isset($_REQUEST['page']) ? $_REQUEST['page'] : 1;
 		$N_last_updated = mysql_real_escape_string($_REQUEST['last_updated']);
 
 		$long_local = strtotime($N_last_updated) * 1000;
 		$long_server = strtotime($obj_kelurahan->get_last_updated()) * 1000;
 		if($long_server > $long_local){
-			$result = $obj_kelurahan->get_kelurahan_sync($N_last_updated);
+			$result = $obj_kelurahan->get_kelurahan_sync($N_page, $N_last_updated);
 			//var_dump($result);
 			if(is_array($result)){
-				$R_message = array("status" => "200", "message" => "Data Exist", "data" => $result);
+				$itemperpage = 1000;
+				$total_data = $result[0]['total_data_all'];
+				$remaining = $total_data - ((($N_page-1) * $itemperpage) + count($result));
+				$R_message = array("status" => "200", "message" => "Data Exist", "num_data" => count($result), "remaining" => $remaining, "data" => $result);
 			}
 		}
 
